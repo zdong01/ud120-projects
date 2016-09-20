@@ -1,9 +1,9 @@
 #!/usr/bin/python
 
 """ 
-    This is the code to accompany the Lesson 3 (decision tree) mini-project.
+    This is the code to accompany the Lesson 2 (SVM) mini-project.
 
-    Use a Decision Tree to identify emails from the Enron corpus by author:    
+    Use a SVM to identify emails from the Enron corpus by their authors:    
     Sara has label 0
     Chris has label 1
 """
@@ -19,20 +19,16 @@ from email_preprocess import preprocess
 ### labels_train and labels_test are the corresponding item labels
 features_train, features_test, labels_train, labels_test = preprocess()
 
-print len(features_train[0])
+features_train = features_train[:len(features_train)/100]
+features_test  = features_test[:len(features_test)/100]
+labels_train   = labels_train[:len(labels_train)/100]
+labels_test    = labels_test[:len(labels_test)/100]
 
-smallset = False 
-
-if smallset:
-    features_train = features_train[:len(features_train)/10]
-    features_test  = features_test[:len(features_test)/10]
-    labels_train   = labels_train[:len(labels_train)/10]
-    labels_test    = labels_test[:len(labels_test)/10] 
 
 #########################################################
 ### your code goes here ###
-from sklearn.tree import DecisionTreeClassifier
-clf = DecisionTreeClassifier(min_samples_split=40)
+from sklearn.svm import SVC
+clf = SVC(C=1000000.0, kernel='rbf')
 t0 = time()
 clf.fit(features_train, labels_train)
 print 'Training time:', round(time() - t0, 3), 's'
@@ -42,7 +38,6 @@ print 'Predicting time:', round(time() - t0, 3), 's'
 from sklearn.metrics import accuracy_score
 score = accuracy_score(pred, labels_test)
 print score
-
 
 #########################################################
 
